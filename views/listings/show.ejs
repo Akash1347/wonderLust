@@ -1,0 +1,138 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+
+        <!-- Listing Title -->
+        <h2 class="listing-title mb-3">
+          <%= listing.title %>
+        </h2>
+
+        <!-- Image Card -->
+        <div class="card listing-card shadow-sm mb-4">
+          <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>" />
+          <div class="card-body">
+            <% if (listing.owner) { %>
+              <p class="card-text">Owned by: <%= listing.owner.username %>
+              </p>
+              <p class="card-text">Email: <%= listing.owner.email %>
+              </p>
+              <% } else { %>
+                <p class="card-text">Owner: Unknown</p>
+                <% } %>
+                  <p class="card-text">
+                    <%= listing.description %>
+                  </p>
+          </div>
+        </div>
+
+        <!-- Details Card -->
+        <div class="card details-card mb-4">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="fa-solid fa-location-dot me-2"></i>
+                <%= listing.location %>, <%= listing.country %>
+              </li>
+              <li class="list-group-item">
+                <i class="fa-solid fa-indian-rupee-sign me-2"></i>
+                <b>
+                  <%= listing.price.toLocaleString("en-IN") %>
+                </b> / night
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Edit / Delete Buttons -->
+        <% if (currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
+          <div class="btns mb-4">
+            <form action="/listings/<%= listing._id %>/edit" method="get" class="show-btn d-inline">
+              <button type="submit" class="btn btn-danger">Edit</button>
+            </form>
+            <form action="/listings/<%= listing._id %>/del?_method=DELETE" method="post" class="show-btn d-inline ms-3">
+              <button type="submit" class="btn btn-dark">Delete</button>
+            </form>
+          </div>
+          <% } %>
+
+            <!-- Review Section -->
+            <div class="review-form mt-4">
+              <% if (currUser) { %>
+                <h4>Leave a Review</h4>
+                <form action="/listings/<%= listing._id %>/review" method="post" class="needs-validation" novalidate>
+                  <div class="mb-3 mt-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <fieldset class="starability-slot">
+                      <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
+                      <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                      <label for="first-rate1">1 star</label>
+                      <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                      <label for="first-rate2">2 stars</label>
+                      <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                      <label for="first-rate3">3 stars</label>
+                      <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                      <label for="first-rate4">4 stars</label>
+                      <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                      <label for="first-rate5">5 stars</label>
+                    </fieldset>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea name="review[comment]" id="comment" cols="30" rows="4" class="form-control"
+                      required></textarea>
+                    <div class="invalid-feedback">Please write a comment for your review.</div>
+                  </div>
+
+                  <button type="submit" class="btn btn-dark">Submit Review</button>
+                </form>
+                <% } %>
+
+                  <% if (listing.reviews && listing.reviews.length> 0) { %>
+                    <hr />
+                    <p><b>Reviews</b></p>
+                    <div class="row">
+                      <% for (let rev of listing.reviews) { %>
+                        <div class="card col-5 ms-3 mb-3 pt-2">
+                          <div class="card-body">
+                            <h5 class="card-title">
+                              <b>
+                                <%= rev.author ? rev.author.username : "Unknown User" %>
+                              </b>
+                            </h5>
+                            <p class="card-text">
+                              <%= rev.comment %>
+                            </p>
+                            <p class="card-text starability-result" data-rating="<%= rev.rating %>"></p>
+                            <% if (currUser && rev.author && currUser._id.toString()===rev.author._id.toString()) { %>
+                              <form class="review-btn"
+                                action="/listings/<%= listing._id %>/review/<%= rev._id %>?_method=DELETE"
+                                method="post">
+                                <button class="btn btn-dark">Delete</button>
+                              </form>
+                              <% } %>
+                          </div>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% } %>
+            </div>
+
+            <!-- Map Section -->
+            <h3 class="mt-4 ">Where you'll be</h3>
+            <div class ="mt-4 offset-2" id="map" data-coordinates='<%= JSON.stringify(listing.geometry.coordinates) %>'></div>
+            <script>
+              const mapToken = "<%= process.env.MAP_TOKEN %>";
+               
+            </script>
+            <script src="/js/map.js"></script>
+
+
+
+      </div>
+    </div>
+  </div>
