@@ -5,11 +5,12 @@ const mapboxClient = require("@mapbox/mapbox-sdk/services/geocoding");
 require('dotenv').config({ path: '../.env' });
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
+const mongoUrl = process.env.ATLASDB_URL;
 const geocodingClient = mapboxClient({ accessToken: process.env.MAP_TOKEN });
 
 async function main() {
   try {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(mongoUrl);
     await Listing.deleteMany({});
 
     for (const obj of initData.data) {
