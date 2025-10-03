@@ -39,7 +39,7 @@ module.exports.isListingOwner = async(req ,res ,next) => {
     next();
 };
 
-// NOTE: The following isOwner is for reviews and should be renamed or removed. Using isReviewAuthor instead.
+
 module.exports.isOwner = async(req ,res ,next) => {
     let {reviewId} = req.params;
 
