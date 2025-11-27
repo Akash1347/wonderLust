@@ -264,3 +264,47 @@ button:hover {
     width: 350px;
     padding: 0.5rem 0 0 3rem;
 }
+
+.searchResults{
+    
+        background-color: #212e3aed;
+    width: 350px;
+    max-height: 300px;
+    position: absolute;
+    border-radius: 0.5rem;
+    overflow-y: auto;
+   
+}
+/* Scrollbar width */
+#searchResults::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Background of track */
+#searchResults::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+/* Scroll thumb */
+#searchResults::-webkit-scrollbar-thumb {
+    background: #8a8a8a;
+    border-radius: 10px;
+}
+
+/* Hover effect */
+#searchResults::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.searchResultPlace{
+    padding: 0.5rem 1rem;
+     
+    color: white;
+    cursor: pointer;
+}
+.searchResultPlace a{
+    color: white;
+    text-decoration: none;
+}

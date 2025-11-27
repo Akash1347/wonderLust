@@ -1,5 +1,8 @@
+<% hideFilters = false; %> 
+<!-- showing search bar in home page  -->
 <%- layout('/layouts/boilerplate.ejs') %>
-  
+
+
 <style>
     .filters{
         display: flex;
@@ -55,6 +58,8 @@
     }
   */
 </style>
+  
+
   <div class="filters">
         
         <div class="filter">
@@ -157,10 +162,17 @@
 
     <% } %>
     </div>
+    
 
   </div>
 
+   
+<script id="listings-json" type="application/json">
+    <%- JSON.stringify(info) %>
+</script>
+
   <script>
+    
     let taxSwitch = document.getElementById('flexSwitchCheckDefault');
     taxSwitch.addEventListener('click' ,() => {
       let taxInfo = document.getElementsByClassName('tax-info');
@@ -171,8 +183,62 @@
           info.style.display = "none";
         }
       }
+      
 
     });
+
+   
+  let listings_data = JSON.parse(
+      document.getElementById("listings-json").textContent
+  );
+  console.log(listings_data);
+  
+  let search_box = document.getElementById("search_box");
+  let searchResults = document.getElementById("searchResults");
+  
+  search_box.addEventListener("focus", () => {
+      searchResults.style.display = "block";
+  });
+
+  
+  search_box.addEventListener("blur", () => {
+      setTimeout(() => {
+          searchResults.style.display = "none";
+      }, 150);  
+  });
+
+  
+  function renderResults(listings) {
+      searchResults.innerHTML = "";
+
+      listings.forEach(place => {
+          let div = document.createElement("div");
+          div.className = "searchResultPlace";
+
+          let listingId = `/listings/${place._id}`;
+          div.innerHTML = `<a href="${listingId}">${place.title}</a>`;
+
+          searchResults.appendChild(div);
+      });
+  }
+
+  
+  search_box.addEventListener("focus", () => {
+      renderResults(listings_data);
+  });
+
+  
+  search_box.addEventListener("input", () => {
+      let sub = search_box.value.trim().toLowerCase();
+
+      let filtered = listings_data.filter(place =>
+          place.title.toLowerCase().includes(sub)
+      );
+
+      renderResults(filtered);
+  });
+
+
   </script>
 
 

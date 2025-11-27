@@ -1,3 +1,4 @@
+<% if (typeof hideFilters === "undefined") { hideFilters = true; } %>
 <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top" data-bs-theme="light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/listings"
@@ -17,16 +18,30 @@
           <a class="nav-link" href="/listings">Explore</a>
         </li>
       </ul>
-      <form class="d-flex mx-auto  search-box" role="search" action="/listings/search" method="GET">
-        <input
-          class="form-control me-2 search-input"
-          type="search"
-          name="q"
-          placeholder="Search destinations"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-      </form>
+
+      <% if (!hideFilters) { %>
+      <div >
+        <div>
+          <form class="d-flex mx-auto  search-box" role="search" action="/listings/search" method="GET">
+            <input
+              class="form-control me-2 search-input"
+              type="search"
+              name="search_box"
+              placeholder="Search destinations"
+              aria-label="Search"
+              id="search_box"
+              autocomplete="off"
+            />
+            <button class="btn btn-outline-success btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+          </form>
+        </div>
+      <div class="searchResults" id="searchResults">
+        <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum voluptate a iure inventore dolor velit aliquam, maxime corporis doloremque eos amet perferendis quaerat soluta nihil, dolores blanditiis deserunt laboriosam dolore.</p>
+                 -->
+         
+      </div>
+      </div>
+      <% } %>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link" href="/listings/newplace">Add New Listing</a>
@@ -49,5 +64,13 @@
         <% } %>
       </ul>
     </div>
+    
+
+    </div>
   </div>
 </nav>
+
+<script>
+  
+
+</script>
